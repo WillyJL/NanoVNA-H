@@ -127,7 +127,7 @@ static uint16_t p_sweep = 0;
 float measured[2][SWEEP_POINTS_MAX][2];
 
 #undef VERSION
-#define VERSION "1.2.43"
+#define VERSION "1.2.44"
 
 // Version text, displayed in Config->Version menu, also send by info command
 const char *info_about[]={
@@ -3352,6 +3352,16 @@ int main(void)
   load_settings();
 
 /*
+  * SPI bus and LCD Initialize
+  */
+  lcd_init();
+
+    // Set LCD display brightness
+#ifdef  __LCD_BRIGHTNESS__
+  lcd_setBrightness(config._brightness);
+#endif
+
+/*
  * I2C bus
  */
   i2c_start();
@@ -3373,18 +3383,6 @@ int main(void)
   shell_init_connection();
 
 /*
- * SPI bus and LCD Initialize
- */
-  lcd_init();
-  lcd_set_colors(LCD_TRACE_2_COLOR, LCD_BG_COLOR);
-  lcd_drawstring_size(BOARD_NAME, 5 , 5, 3);
-  lcd_set_colors(LCD_FG_COLOR, LCD_BG_COLOR);
-  lcd_drawstring(5, sFONT_GET_HEIGHT*4+10, "Starting...");
-  // Set LCD display brightness
-#ifdef  __LCD_BRIGHTNESS__
-  lcd_setBrightness(config._brightness);
-#endif
-  /*
    * SD Card init (if inserted) allow fix issues
    * Some card after insert work in SDIO mode and can corrupt SPI exchange (need switch it to SPI)
    */
@@ -3396,7 +3394,7 @@ int main(void)
  * tlv320aic Initialize (audio codec)
  */
   tlv320aic3204_init();
-  chThdSleepMilliseconds(300); // Wait for aic codec start
+  chThdSleepMilliseconds(200); // Wait for aic codec start
 /*
  * I2S Initialize
  */

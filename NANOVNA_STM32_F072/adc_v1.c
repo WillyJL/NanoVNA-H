@@ -40,19 +40,23 @@ void adc_init(void)
   nvicEnableVector(ADC1_COMP_IRQn, STM32_EXT_EXTI21_22_IRQ_PRIORITY); // Shared vs GPIO handler
   VNA_ADC->CFGR1 = 0;
   /* Ensure flag states */
-  VNA_ADC->ISR = VNA_ADC->CR;                  // clear ISR
+  VNA_ADC->ISR = VNA_ADC->ISR;                  // clear ISR
   VNA_ADC->IER = 0;
 
   /* Calibration procedure.*/
-  if (VNA_ADC->CR & ADC_CR_ADEN) {
+  if (VNA_ADC->CR & ADC_CR_ADEN) {  //Ensure that ADEN = 0
     VNA_ADC->CR |= ~ADC_CR_ADDIS;      // Disable ADC
     while (VNA_ADC->CR & ADC_CR_ADEN); // Wait completion
   }
+  VNA_ADC->CR |= ADC_CR_ADCAL;  //Launch the calibration by setting ADCAL
+  while (VNA_ADC->CR & ADC_CR_ADCAL); //Wait until ADCAL=0
 
-  VNA_ADC->CR |= ADC_CR_ADCAL;
-  while (VNA_ADC->CR & ADC_CR_ADCAL);
+  if (VNA_ADC->ISR & ADC_ISR_ADRDY)  // Ensure that ADRDY = 0
+  {
+	  VNA_ADC->ISR |= ADC_ISR_ADRDY; // Clear ADRDY
+   }
   VNA_ADC->CR |= ADC_CR_ADEN;                  // Enable ADC
-  while (!(VNA_ADC->ISR & ADC_ISR_ADRDY));
+  while (!(VNA_ADC->ISR & ADC_ISR_ADRDY));  // Wait until ADC ready
   // VBATEN enables resiter devider circuit. It consume vbat power.
   ADC->CCR = ADC_CCR_VREFEN | ADC_CCR_VBATEN;
 }

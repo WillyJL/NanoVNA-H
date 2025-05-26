@@ -408,7 +408,7 @@ extern const char *info_about[];
 #if defined(NANOVNA_F303)
 // Generator ready delays, values in us
 #define DELAY_BAND_1_2           US2ST( 100)   // Delay for bands 1-2
-#define DELAY_BAND_3_4           US2ST( 200)   // Delay for bands 3-4
+#define DELAY_BAND_3_4           US2ST( 300)   // Delay for bands 3-4
 #define DELAY_BANDCHANGE         US2ST(5000)   // Band changes need set additional delay after reset PLL
 #define DELAY_CHANNEL_CHANGE     US2ST( 400)   // Switch channel delay
 #define DELAY_SWEEP_START        US2ST(2000)   // Delay at sweep start
@@ -418,7 +418,7 @@ extern const char *info_about[];
 #else
 // Generator ready delays, values in us
 #define DELAY_BAND_1_2           US2ST( 100)   // 0 Delay for bands 1-2
-#define DELAY_BAND_3_4           US2ST( 200)   // 1 Delay for bands 3-4
+#define DELAY_BAND_3_4           US2ST( 300)   // 1 Delay for bands 3-4
 #define DELAY_BANDCHANGE         US2ST( 5000)   // 2 Band changes need set additional delay after reset PLL
 #define DELAY_CHANNEL_CHANGE     US2ST( 400)   // 3 Switch channel delay
 #define DELAY_SWEEP_START        US2ST( 2000)   // 4 Delay at sweep start
@@ -861,6 +861,8 @@ enum trace_type {
 #define ROUND_GRID_MASK ((1<<TRC_POLAR)|(1<<TRC_SMITH))
 // Scale / Amplitude input in nano/pico values graph type
 #define NANO_TYPE_MASK        ((1<<TRC_DELAY)|(1<<TRC_sC)|(1<<TRC_sL)|(1<<TRC_pC)|(1<<TRC_pL))
+// Universal trace type for both channels
+#define S11_AND_S21_TYPE_MASK ((1<<TRC_LOGMAG)|(1<<TRC_PHASE)|(1<<TRC_DELAY)|(1<<TRC_LINEAR)|(1<<TRC_REAL)|(1<<TRC_IMAG)|(1<<TRC_POLAR)|(1<<TRC_SMITH))
 
 // Trace info description structure
 typedef float (*get_value_cb_t)(int idx, const float *v); // get value callback

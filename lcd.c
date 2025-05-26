@@ -561,6 +561,10 @@ void lcd_init(void) {
     chThdSleepMilliseconds(2);
   }
   lcd_clear_screen();
+  lcd_set_colors(LCD_TRACE_2_COLOR, LCD_BG_COLOR);
+  lcd_drawstring_size(BOARD_NAME, 5 , 5, 3);
+  lcd_set_colors(LCD_FG_COLOR, LCD_BG_COLOR);
+  lcd_drawstring(5, sFONT_GET_HEIGHT*4+10, "Starting...");
 }
 
 void lcd_setWindow(int x, int y, int w, int h, uint16_t cmd) {

@@ -908,6 +908,8 @@ static UI_FUNCTION_ADV_CALLBACK(menu_channel_acb) {
     b->p1.text = ch == 0 ? "S11 (REFL)" : "S21 (THRU)";
     return;
   }
+  // Change channel only if trace type available for this
+  if ((1<<(trace[current_trace].type)) & S11_AND_S21_TYPE_MASK)
   set_trace_channel(current_trace, ch^1);
 }
 
@@ -3708,7 +3710,7 @@ void ui_init() {
   // Init touch subsystem
   touch_init();
   // Set LCD display brightness
-#ifdef  __LCD_BRIGHTNESS__
-  lcd_setBrightness(config._brightness);
-#endif
+//#ifdef  __LCD_BRIGHTNESS__
+//  lcd_setBrightness(config._brightness);
+//#endif
 }
