@@ -181,7 +181,7 @@
 #endif
 
 // Maximum frequency set
-#define FREQUENCY_MAX            2000000000U
+#define FREQUENCY_MAX            2700000000U
 
 // Frequency threshold (max frequency for si5351, harmonic mode after)
 #ifdef __ZEETK__
